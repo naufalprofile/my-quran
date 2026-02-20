@@ -1,0 +1,153 @@
+"use client";
+
+import React, { useState, useEffect, useCallback } from "react";
+import Link from "next/link";
+import { ArrowLeft, Moon, Bell, BellOff, Volume2, MapPin, CheckCircle } from "lucide-react";
+import BottomNav from "@/components/navigation/BottomNav";
+
+export default function PrayerTimesPage() {
+    const [timings, setTimings] = useState<Record<string, string> | null>(null);
+    const [location, setLocation] = useState("Jakarta, Indonesia");
+    const [nextPrayer, setNextPrayer] = useState<{ name: string; time: string; diff: string } | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [alerts, setAlerts] = useState<Record<string, boolean>>({
+        Fajr: true, Dhuhr: true, Asr: true, Maghrib: true, Isha: true,
+    });
+
+    const fetchTimings = useCallback(async (lat: number, lon: number) => {
+        try {
+            const res = await fetch(`https://api.aladhan.com/v1/timings/${Math.floor(Date.now() / 1000)}?latitude=${lat}&longitude=${lon}&method=20`);
+            const data = await res.json();
+            if (data.code === 200) {
+                setTimings(data.data.timings);
+                setLocation(data.data.meta.timezone?.replace("/", ", ") || "Jakarta, Indonesia");
+            }
+        } catch (err) { console.error(err); }
+        finally { setLoading(false); }
+    }, []);
+
+    useEffect(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => fetchTimings(pos.coords.latitude, pos.coords.longitude),
+                () => { fetchTimings(-6.2088, 106.8456); setLocation("Jakarta (Fallback)"); },
+            );
+        } else { fetchTimings(-6.2088, 106.8456); }
+    }, [fetchTimings]);
+
+    useEffect(() => {
+        if (!timings) return;
+        const interval = setInterval(() => {
+            const now = new Date();
+            const prayers = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
+            for (const p of prayers) {
+                const [h, m] = timings[p].split(":").map(Number);
+                const pDate = new Date(); pDate.setHours(h, m, 0);
+                if (pDate > now) {
+                    const diff = pDate.getTime() - now.getTime();
+                    const hrs = Math.floor(diff / 3600000);
+                    const mins = Math.floor((diff % 3600000) / 60000);
+                    const secs = Math.floor((diff % 60000) / 1000);
+                    setNextPrayer({ name: p, time: timings[p], diff: `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}` });
+                    return;
+                }
+            }
+            setNextPrayer({ name: "Fajr", time: timings.Fajr, diff: "--:--:--" });
+        }, 1000);
+        return () => clearInterval(interval);
+    }, [timings]);
+
+    return (
+        <div style={{ paddingTop: 16, paddingBottom: 100, minHeight: '100vh' }}>
+            {/* Header */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 20px', marginBottom: 24 }}>
+                <Link href="/" style={{ width: 40, height: 40, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F7F9FB', textDecoration: 'none' }}>
+                    <ArrowLeft size={22} color="#1A1F25" />
+                </Link>
+                <h1 style={{ fontSize: 20, fontWeight: 800, color: '#1A1F25' }}>Prayer Schedule</h1>
+                <div style={{ width: 40 }} />
+            </div>
+
+            {loading ? (
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '80px 0', gap: 12 }}>
+                    <div style={{ width: 36, height: 36, border: '4px solid #E6F3EF', borderTopColor: '#008D63', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+                    <p style={{ fontSize: 14, color: '#6C7278' }}>Calculating Prayer Times...</p>
+                    <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+                </div>
+            ) : (
+                <div style={{ padding: '0 20px' }}>
+                    {/* Next Prayer Card */}
+                    {nextPrayer && (
+                        <div style={{
+                            padding: 24, borderRadius: 24,
+                            background: 'linear-gradient(135deg, #008D63 0%, #06403D 100%)',
+                            color: 'white', position: 'relative', overflow: 'hidden', marginBottom: 28,
+                            boxShadow: '0 8px 32px rgba(0,141,99,0.3)',
+                        }}>
+                            <div style={{ position: 'absolute', top: -20, right: -20, opacity: 0.15 }}>
+                                <Moon size={120} />
+                            </div>
+                            <p style={{ fontSize: 14, opacity: 0.8, marginBottom: 4 }}>{nextPrayer.name} in</p>
+                            <h2 style={{ fontSize: 44, fontWeight: 800, fontVariantNumeric: 'tabular-nums', marginBottom: 8, letterSpacing: -1 }}>{nextPrayer.diff}</h2>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, opacity: 0.8 }}>
+                                <MapPin size={14} /> <span>{location}</span>
+                            </div>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: 20, paddingTop: 16, borderTop: '1px solid rgba(255,255,255,0.15)' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                    <Bell size={16} /> <span style={{ fontSize: 13, fontWeight: 600 }}>Alert On</span>
+                                </div>
+                                <div style={{ width: 44, height: 24, borderRadius: 12, background: '#1ED760', position: 'relative', cursor: 'pointer' }}>
+                                    <div style={{ position: 'absolute', top: 3, right: 3, width: 18, height: 18, borderRadius: '50%', background: 'white' }} />
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Schedule List */}
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
+                        <h3 style={{ fontSize: 18, fontWeight: 800, color: '#1A1F25' }}>Schedule</h3>
+                        <span style={{ fontSize: 13, color: '#6C7278' }}>
+                            {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                        </span>
+                    </div>
+
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+                        {timings && ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"].map((p) => {
+                            const isNext = nextPrayer?.name === p;
+                            return (
+                                <div key={p} style={{
+                                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                                    padding: '14px 16px', borderRadius: 16,
+                                    background: isNext ? '#FFF3E0' : '#FFFFFF',
+                                    border: isNext ? '2px solid #FF9800' : '1px solid #F0F2F5',
+                                }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+                                        <div style={{
+                                            width: 36, height: 36, borderRadius: '50%',
+                                            background: isNext ? '#FF9800' : '#E6F3EF',
+                                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                        }}>
+                                            {isNext ? <CheckCircle size={18} color="white" /> : <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#008D63' }} />}
+                                        </div>
+                                        <div>
+                                            <h4 style={{ fontSize: 15, fontWeight: 700, color: isNext ? '#E65100' : '#1A1F25' }}>{p}</h4>
+                                            <p style={{ fontSize: 12, color: '#6C7278' }}>{timings[p]}</p>
+                                        </div>
+                                    </div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                        {isNext && <span style={{ fontSize: 10, fontWeight: 700, color: '#E65100', textTransform: 'uppercase', background: '#FFE0B2', padding: '2px 8px', borderRadius: 6 }}>NOW</span>}
+                                        <button onClick={() => setAlerts(prev => ({ ...prev, [p]: !prev[p] }))} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}>
+                                            {alerts[p] ? <Volume2 size={18} color={isNext ? '#E65100' : '#008D63'} /> : <BellOff size={18} color="#6C7278" />}
+                                        </button>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            )}
+
+            <BottomNav />
+        </div>
+    );
+}

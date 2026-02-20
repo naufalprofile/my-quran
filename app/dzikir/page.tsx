@@ -1,0 +1,297 @@
+"use client";
+
+import React, { useState } from "react";
+import Link from "next/link";
+import { ArrowLeft, ChevronRight, Sun, Moon, BookOpen, Heart, Volume2, Pause } from "lucide-react";
+import BottomNav from "@/components/navigation/BottomNav";
+
+const CATEGORIES = [
+    {
+        id: "pagi",
+        title: "Dzikir Pagi",
+        icon: "🌅",
+        color: "#FF9800",
+        bgColor: "#FFF3E0",
+        desc: "Dibaca setelah Subuh",
+        items: [
+            { arabic: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلّٰهِ وَالْحَمْدُ لِلّٰهِ، لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيكَ لَهُ", latin: "Ashbahnaa wa ashbahal mulku lillaahi wal hamdu lillaah, laa ilaaha illallaahu wahdahu laa syariika lah", meaning: "Kami memasuki waktu pagi dan kerajaan hanya milik Allah. Segala puji bagi Allah. Tidak ada ilah yang berhak disembah kecuali Allah semata, tidak ada sekutu bagi-Nya.", count: 1 },
+            { arabic: "اَللّٰهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ", latin: "Allaahumma bika ashbahnaa, wa bika amsainaa, wa bika nahyaa, wa bika namuutu wa ilaikan nusyuur", meaning: "Ya Allah, dengan rahmat dan pertolongan-Mu kami memasuki waktu pagi, dan dengan rahmat dan pertolongan-Mu kami memasuki waktu petang. Dengan rahmat dan pertolongan-Mu kami hidup dan dengan kehendak-Mu kami mati. Dan kepada-Mu kebangkitan.", count: 1 },
+            { arabic: "سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ", latin: "Subhaanallaahi wa bihamdih", meaning: "Maha Suci Allah dan dengan memuji-Nya.", count: 100 },
+            { arabic: "لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", latin: "Laa ilaaha illallaahu wahdahu laa syariika lah, lahul mulku wa lahul hamdu wa huwa 'alaa kulli syai'in qadiir", meaning: "Tidak ada ilah yang berhak disembah kecuali Allah semata, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala pujian. Dan Dia Maha Kuasa atas segala sesuatu.", count: 10 },
+            { arabic: "أَسْتَغْفِرُ اللّٰهَ وَأَتُوبُ إِلَيْهِ", latin: "Astaghfirullaaha wa atuubu ilaih", meaning: "Aku memohon ampun kepada Allah dan bertobat kepada-Nya.", count: 100 },
+        ],
+    },
+    {
+        id: "petang",
+        title: "Dzikir Petang",
+        icon: "🌇",
+        color: "#7C3AED",
+        bgColor: "#F3E8FF",
+        desc: "Dibaca setelah Ashar",
+        items: [
+            { arabic: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلّٰهِ وَالْحَمْدُ لِلّٰهِ، لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيكَ لَهُ", latin: "Amsainaa wa amsal mulku lillaahi wal hamdu lillaah, laa ilaaha illallaahu wahdahu laa syariika lah", meaning: "Kami memasuki waktu petang dan kerajaan hanya milik Allah. Segala puji bagi Allah. Tidak ada ilah yang berhak disembah kecuali Allah semata, tidak ada sekutu bagi-Nya.", count: 1 },
+            { arabic: "اَللّٰهُمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ الْمَصِيرُ", latin: "Allaahumma bika amsainaa, wa bika ashbahnaa, wa bika nahyaa, wa bika namuutu wa ilaikal mashiir", meaning: "Ya Allah, dengan rahmat dan pertolongan-Mu kami memasuki waktu petang, dan dengan rahmat dan pertolongan-Mu kami memasuki waktu pagi. Dengan rahmat dan pertolongan-Mu kami hidup dan dengan kehendak-Mu kami mati. Dan kepada-Mu tempat kembali.", count: 1 },
+            { arabic: "سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ", latin: "Subhaanallaahi wa bihamdih", meaning: "Maha Suci Allah dan dengan memuji-Nya.", count: 100 },
+            { arabic: "أَعُوذُ بِكَلِمَاتِ اللّٰهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ", latin: "A'uudzu bikalimaatillaahit taammaati min syarri maa khalaq", meaning: "Aku berlindung dengan kalimat-kalimat Allah yang sempurna dari kejahatan makhluk-Nya.", count: 3 },
+        ],
+    },
+    {
+        id: "sholat",
+        title: "Setelah Sholat",
+        icon: "🤲",
+        color: "#008D63",
+        bgColor: "#E6F3EF",
+        desc: "Dibaca setelah salam",
+        items: [
+            { arabic: "أَسْتَغْفِرُ اللّٰهَ", latin: "Astaghfirullaah", meaning: "Aku memohon ampun kepada Allah.", count: 3 },
+            { arabic: "اَللّٰهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ", latin: "Allaahumma antas salaamu wa minkas salaamu tabaarakta yaa dzal jalaali wal ikraam", meaning: "Ya Allah, Engkau pemberi keselamatan, dan dari-Mu keselamatan. Mahasuci Engkau, wahai Tuhan pemilik keagungan dan kemuliaan.", count: 1 },
+            { arabic: "سُبْحَانَ اللّٰهِ", latin: "Subhaanallaah", meaning: "Maha Suci Allah.", count: 33 },
+            { arabic: "اَلْحَمْدُ لِلّٰهِ", latin: "Alhamdulillaah", meaning: "Segala puji bagi Allah.", count: 33 },
+            { arabic: "اَللّٰهُ أَكْبَرُ", latin: "Allaahu Akbar", meaning: "Allah Maha Besar.", count: 33 },
+            { arabic: "لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", latin: "Laa ilaaha illallaahu wahdahu laa syariika lah, lahul mulku wa lahul hamdu wa huwa 'alaa kulli syai'in qadiir", meaning: "Tidak ada ilah yang berhak disembah kecuali Allah semata, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya pujian. Dan Dia Maha Kuasa atas segala sesuatu.", count: 1 },
+        ],
+    },
+    {
+        id: "tidur",
+        title: "Sebelum Tidur",
+        icon: "🌙",
+        color: "#1E40AF",
+        bgColor: "#DBEAFE",
+        desc: "Doa sebelum tidur",
+        items: [
+            { arabic: "بِاسْمِكَ اللّٰهُمَّ أَمُوتُ وَأَحْيَا", latin: "Bismikallaahumma amuutu wa ahyaa", meaning: "Dengan menyebut nama-Mu, ya Allah, aku mati dan aku hidup.", count: 1 },
+            { arabic: "اَللّٰهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ", latin: "Allaahumma qinii 'adzaabaka yauma tab'atsu 'ibaadak", meaning: "Ya Allah, lindungilah aku dari azab-Mu pada hari Engkau membangkitkan hamba-hamba-Mu.", count: 3 },
+        ],
+    },
+];
+
+function DzikrItemCard({ item, index }: { item: typeof CATEGORIES[0]["items"][0]; index: number }) {
+    const [currentCount, setCurrentCount] = useState(0);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const completed = currentCount >= item.count;
+
+    const increment = () => {
+        if (currentCount < item.count) {
+            setCurrentCount(prev => prev + 1);
+            if (window.navigator.vibrate) window.navigator.vibrate(20);
+        }
+        if (currentCount + 1 === item.count && window.navigator.vibrate) {
+            window.navigator.vibrate([100, 50, 100]);
+        }
+    };
+
+    const reset = () => setCurrentCount(0);
+
+    return (
+        <div
+            onClick={increment}
+            style={{
+                padding: '20px', marginBottom: 12, borderRadius: 20, cursor: 'pointer',
+                background: completed ? '#E6F3EF' : '#FFFFFF',
+                border: completed ? '2px solid #008D63' : '1px solid #F0F2F5',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+                transition: 'all 0.2s',
+                userSelect: 'none',
+            }}
+        >
+            {/* Counter badge */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                <div style={{
+                    display: 'flex', alignItems: 'center', gap: 8,
+                }}>
+                    <div style={{
+                        width: 28, height: 28, borderRadius: '50%', background: completed ? '#008D63' : '#F0F2F5',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: 12, fontWeight: 700, color: completed ? 'white' : '#6C7278',
+                    }}>
+                        {completed ? '✓' : index + 1}
+                    </div>
+                    <span style={{ fontSize: 11, fontWeight: 600, color: '#6C7278' }}>
+                        Ulangi {item.count}x
+                    </span>
+                </div>
+
+                {/* Progress */}
+                <div style={{
+                    display: 'flex', alignItems: 'center', gap: 6,
+                }}>
+                    <span style={{ fontSize: 18, fontWeight: 800, color: completed ? '#008D63' : '#1A1F25' }}>
+                        {currentCount}
+                    </span>
+                    <span style={{ fontSize: 12, color: '#6C7278' }}>/ {item.count}</span>
+                    {currentCount > 0 && (
+                        <button onClick={(e) => { e.stopPropagation(); reset(); }} style={{
+                            width: 22, height: 22, borderRadius: '50%', background: '#F0F2F5',
+                            border: 'none', cursor: 'pointer', fontSize: 10, display: 'flex',
+                            alignItems: 'center', justifyContent: 'center', color: '#6C7278',
+                        }}>↺</button>
+                    )}
+                </div>
+            </div>
+
+            {/* Progress bar */}
+            <div style={{ height: 3, background: '#F0F2F5', borderRadius: 10, marginBottom: 16, overflow: 'hidden' }}>
+                <div style={{
+                    height: '100%', width: `${(currentCount / item.count) * 100}%`,
+                    background: completed ? '#008D63' : '#008D63',
+                    borderRadius: 10, transition: 'width 0.2s ease',
+                }} />
+            </div>
+
+            {/* Arabic text */}
+            <p className="font-arabic" style={{
+                textAlign: 'right', direction: 'rtl', fontSize: 24, lineHeight: '48px',
+                color: '#1A1F25', marginBottom: 12,
+            }}>
+                {item.arabic}
+            </p>
+
+            {/* Latin */}
+            <p style={{ fontSize: 13, color: '#008D63', fontStyle: 'italic', marginBottom: 8, lineHeight: 1.5 }}>{item.latin}</p>
+
+            {/* Meaning */}
+            <p style={{ fontSize: 13, color: '#6C7278', lineHeight: 1.6 }}>{item.meaning}</p>
+
+            {/* Tap hint */}
+            {!completed && (
+                <p style={{ fontSize: 11, color: '#9CA3AF', textAlign: 'center', marginTop: 12, fontWeight: 500 }}>
+                    👆 Tap untuk menghitung
+                </p>
+            )}
+        </div>
+    );
+}
+
+export default function DzikirPage() {
+    const [activeCategory, setActiveCategory] = useState<string | null>(null);
+
+    const selectedCategory = CATEGORIES.find(c => c.id === activeCategory);
+
+    return (
+        <div style={{ paddingTop: 16, paddingBottom: 100, minHeight: '100vh', background: '#F7F9FB' }}>
+            {/* Header */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 20px', marginBottom: 24 }}>
+                <Link href="/" style={{ width: 40, height: 40, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F0F2F5', textDecoration: 'none' }}>
+                    <ArrowLeft size={22} color="#1A1F25" />
+                </Link>
+                <h1 style={{ fontSize: 20, fontWeight: 800, color: '#1A1F25' }}>
+                    {activeCategory ? selectedCategory?.title : 'Dzikir & Doa'}
+                </h1>
+                <div style={{ width: 40 }} />
+            </div>
+
+            {!activeCategory ? (
+                <>
+                    {/* Hero */}
+                    <div style={{
+                        margin: '0 20px 28px', padding: '28px 24px', borderRadius: 24,
+                        background: 'linear-gradient(135deg, #008D63 0%, #06403D 100%)',
+                        color: 'white', textAlign: 'center', position: 'relative', overflow: 'hidden',
+                        boxShadow: '0 8px 32px rgba(0,141,99,0.3)',
+                    }}>
+                        <div style={{ position: 'absolute', top: -30, right: -20, fontSize: 100, opacity: 0.08 }}>🤲</div>
+                        <p className="font-arabic" style={{ fontSize: 24, marginBottom: 8, lineHeight: 1.6 }}>
+                            أَلَا بِذِكْرِ اللّٰهِ تَطْمَئِنُّ الْقُلُوبُ
+                        </p>
+                        <p style={{ fontSize: 13, opacity: 0.85 }}>
+                            &ldquo;Ketahuilah, hanya dengan mengingat Allah hati menjadi tenteram.&rdquo;
+                        </p>
+                        <p style={{ fontSize: 11, opacity: 0.6, marginTop: 4 }}>QS. Ar-Ra&apos;d: 28</p>
+                    </div>
+
+                    {/* Category Cards */}
+                    <div style={{ padding: '0 20px' }}>
+                        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#1A1F25', marginBottom: 12 }}>Pilih Kategori</h3>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                            {CATEGORIES.map((cat) => (
+                                <button
+                                    key={cat.id}
+                                    onClick={() => setActiveCategory(cat.id)}
+                                    style={{
+                                        display: 'flex', alignItems: 'center', gap: 16, padding: '16px 18px',
+                                        borderRadius: 18, background: '#FFFFFF', border: '1px solid #F0F2F5',
+                                        cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s',
+                                        boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+                                    }}
+                                    onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateX(4px)'; e.currentTarget.style.borderColor = cat.color; }}
+                                    onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateX(0)'; e.currentTarget.style.borderColor = '#F0F2F5'; }}
+                                >
+                                    <div style={{
+                                        width: 52, height: 52, borderRadius: 16, background: cat.bgColor,
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                        fontSize: 28, flexShrink: 0,
+                                    }}>
+                                        {cat.icon}
+                                    </div>
+                                    <div style={{ flex: 1 }}>
+                                        <h4 style={{ fontSize: 16, fontWeight: 700, color: '#1A1F25', marginBottom: 2 }}>{cat.title}</h4>
+                                        <p style={{ fontSize: 12, color: '#6C7278' }}>{cat.desc} • {cat.items.length} dzikir</p>
+                                    </div>
+                                    <ChevronRight size={20} color="#9CA3AF" />
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Quick Dzikir */}
+                    <div style={{ padding: '28px 20px 0' }}>
+                        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#1A1F25', marginBottom: 12 }}>Dzikir Harian</h3>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+                            {[
+                                { arabic: "سُبْحَانَ اللّٰهِ", latin: "SubhanAllah", target: 33 },
+                                { arabic: "اَلْحَمْدُ لِلّٰهِ", latin: "Alhamdulillah", target: 33 },
+                                { arabic: "اَللّٰهُ أَكْبَرُ", latin: "AllahuAkbar", target: 33 },
+                                { arabic: "أَسْتَغْفِرُ اللّٰهَ", latin: "Astaghfirullah", target: 100 },
+                            ].map((d) => (
+                                <Link key={d.latin} href="/tasbih" style={{
+                                    padding: '16px 14px', borderRadius: 16, background: '#FFFFFF',
+                                    border: '1px solid #F0F2F5', textDecoration: 'none', textAlign: 'center',
+                                    boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+                                }}>
+                                    <p className="font-arabic" style={{ fontSize: 18, color: '#008D63', marginBottom: 4, fontWeight: 700 }}>{d.arabic}</p>
+                                    <p style={{ fontSize: 12, color: '#6C7278', fontWeight: 500 }}>{d.latin}</p>
+                                    <p style={{ fontSize: 10, color: '#9CA3AF', marginTop: 2 }}>{d.target}x</p>
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                </>
+            ) : (
+                /* ========== DZIKIR DETAIL VIEW ========== */
+                <div style={{ padding: '0 20px' }}>
+                    {/* Back button */}
+                    <button
+                        onClick={() => setActiveCategory(null)}
+                        style={{
+                            display: 'flex', alignItems: 'center', gap: 8, padding: '10px 16px',
+                            borderRadius: 12, background: selectedCategory?.bgColor || '#F0F2F5',
+                            border: 'none', cursor: 'pointer', marginBottom: 20,
+                            fontSize: 13, fontWeight: 600, color: selectedCategory?.color || '#1A1F25',
+                        }}
+                    >
+                        <ArrowLeft size={16} /> Kembali ke kategori
+                    </button>
+
+                    {/* Category header */}
+                    <div style={{
+                        display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20,
+                        padding: '16px', borderRadius: 16, background: selectedCategory?.bgColor,
+                    }}>
+                        <span style={{ fontSize: 36 }}>{selectedCategory?.icon}</span>
+                        <div>
+                            <h2 style={{ fontSize: 20, fontWeight: 800, color: '#1A1F25' }}>{selectedCategory?.title}</h2>
+                            <p style={{ fontSize: 12, color: '#6C7278' }}>{selectedCategory?.desc} • {selectedCategory?.items.length} dzikir</p>
+                        </div>
+                    </div>
+
+                    {/* Dzikir items */}
+                    {selectedCategory?.items.map((item, i) => (
+                        <DzikrItemCard key={i} item={item} index={i} />
+                    ))}
+                </div>
+            )}
+
+            <BottomNav />
+        </div>
+    );
+}

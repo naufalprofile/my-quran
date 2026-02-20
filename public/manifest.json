@@ -1,0 +1,16 @@
+{
+    "name": "My Quran",
+    "short_name": "MyQuran",
+    "description": "A modern, premium Quran application for daily reading and prayer tracking.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#F7F9FB",
+    "theme_color": "#008D63",
+    "icons": [
+        {
+            "src": "/favicon.ico",
+            "sizes": "64x64 32x32 24x24 16x16",
+            "type": "image/x-icon"
+        }
+    ]
+}
