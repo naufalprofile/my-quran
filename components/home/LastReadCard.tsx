@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Play } from "lucide-react";
+import { useLanguage } from "@/components/LanguageProvider";
 
 interface LastReadData {
     id: number;
@@ -14,6 +15,7 @@ interface LastReadData {
 
 export default function LastReadCard() {
     const [data, setData] = useState<LastReadData | null>(null);
+    const { t } = useLanguage();
 
     useEffect(() => {
         const saved = localStorage.getItem("last_read");
@@ -25,7 +27,6 @@ export default function LastReadCard() {
     const surahName = data?.name || "Surah Al-Kahf";
     const ayahNumber = data?.ayah || 10;
     const location = data?.location || "Meccan";
-    const progress = data?.progress || 45;
     const surahId = data?.id || 18;
 
     return (
@@ -66,18 +67,14 @@ export default function LastReadCard() {
                         background: 'rgba(255,255,255,0.2)', fontSize: 10, fontWeight: 700,
                         letterSpacing: 1, textTransform: 'uppercase', marginBottom: 16,
                     }}>
-                        Last Read
+                        {t.lastRead}
                     </div>
 
                     <h2 style={{ fontSize: 26, fontWeight: 800, marginBottom: 4, lineHeight: 1.2 }}>{surahName}</h2>
-                    <p style={{ fontSize: 13, opacity: 0.8, marginBottom: 24 }}>Ayah {ayahNumber} • {location}</p>
+                    <p style={{ fontSize: 13, opacity: 0.8, marginBottom: 24 }}>{t.ayat} {ayahNumber} • {location}</p>
 
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
-                        <span style={{ fontSize: 10, fontWeight: 600, opacity: 0.7, textTransform: 'uppercase', letterSpacing: 1 }}>Continue Reading</span>
-                        <span style={{ fontSize: 10, fontWeight: 700 }}>{progress}%</span>
-                    </div>
-                    <div style={{ height: 5, background: 'rgba(255,255,255,0.2)', borderRadius: 10, overflow: 'hidden' }}>
-                        <div style={{ height: '100%', width: `${progress}%`, background: '#1ED760', borderRadius: 10, transition: 'width 0.5s' }} />
+                        <span style={{ fontSize: 10, fontWeight: 600, opacity: 0.7, textTransform: 'uppercase', letterSpacing: 1 }}>{t.continueReading}</span>
                     </div>
                 </div>
             </div>

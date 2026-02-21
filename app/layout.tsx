@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import ThemeProvider from "@/components/ThemeProvider";
+import LanguageProvider from "@/components/LanguageProvider";
 
 export const metadata: Metadata = {
   title: "My Quran - Modern Quran App",
@@ -28,9 +30,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div style={{ maxWidth: 448, margin: '0 auto', minHeight: '100vh', position: 'relative', background: '#F7F9FB' }}>
-          {children}
-        </div>
+        <ThemeProvider>
+          <LanguageProvider>
+            <div style={{ maxWidth: 448, margin: '0 auto', minHeight: '100vh', position: 'relative' }}>
+              {children}
+            </div>
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

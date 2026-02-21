@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, ChevronRight, Sun, Moon, BookOpen, Heart, Volume2, Pause } from "lucide-react";
 import BottomNav from "@/components/navigation/BottomNav";
+import { useThemeColors } from "@/components/ThemeProvider";
+import { useLanguage } from "@/components/LanguageProvider";
 
 const CATEGORIES = [
     {
@@ -67,94 +69,54 @@ const CATEGORIES = [
 
 function DzikrItemCard({ item, index }: { item: typeof CATEGORIES[0]["items"][0]; index: number }) {
     const [currentCount, setCurrentCount] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
     const completed = currentCount >= item.count;
+    const { isDark, textMain, textMuted, bgCard, borderColor, subtleBg } = useThemeColors();
 
     const increment = () => {
-        if (currentCount < item.count) {
-            setCurrentCount(prev => prev + 1);
-            if (window.navigator.vibrate) window.navigator.vibrate(20);
-        }
-        if (currentCount + 1 === item.count && window.navigator.vibrate) {
-            window.navigator.vibrate([100, 50, 100]);
-        }
+        if (currentCount < item.count) { setCurrentCount(prev => prev + 1); if (window.navigator.vibrate) window.navigator.vibrate(20); }
+        if (currentCount + 1 === item.count && window.navigator.vibrate) { window.navigator.vibrate([100, 50, 100]); }
     };
-
     const reset = () => setCurrentCount(0);
 
     return (
-        <div
-            onClick={increment}
-            style={{
-                padding: '20px', marginBottom: 12, borderRadius: 20, cursor: 'pointer',
-                background: completed ? '#E6F3EF' : '#FFFFFF',
-                border: completed ? '2px solid #008D63' : '1px solid #F0F2F5',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
-                transition: 'all 0.2s',
-                userSelect: 'none',
-            }}
-        >
-            {/* Counter badge */}
+        <div onClick={increment} style={{
+            padding: '20px', marginBottom: 12, borderRadius: 20, cursor: 'pointer',
+            background: completed ? (isDark ? '#1A2F26' : '#E6F3EF') : bgCard,
+            border: completed ? '2px solid #008D63' : `1px solid ${borderColor}`,
+            boxShadow: '0 2px 8px rgba(0,0,0,0.03)', transition: 'all 0.2s', userSelect: 'none',
+        }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
-                <div style={{
-                    display: 'flex', alignItems: 'center', gap: 8,
-                }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                     <div style={{
-                        width: 28, height: 28, borderRadius: '50%', background: completed ? '#008D63' : '#F0F2F5',
+                        width: 28, height: 28, borderRadius: '50%',
+                        background: completed ? '#008D63' : subtleBg,
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: 12, fontWeight: 700, color: completed ? 'white' : '#6C7278',
+                        fontSize: 12, fontWeight: 700, color: completed ? 'white' : textMuted,
                     }}>
                         {completed ? '✓' : index + 1}
                     </div>
-                    <span style={{ fontSize: 11, fontWeight: 600, color: '#6C7278' }}>
-                        Ulangi {item.count}x
-                    </span>
+                    <span style={{ fontSize: 11, fontWeight: 600, color: textMuted }}>Ulangi {item.count}x</span>
                 </div>
-
-                {/* Progress */}
-                <div style={{
-                    display: 'flex', alignItems: 'center', gap: 6,
-                }}>
-                    <span style={{ fontSize: 18, fontWeight: 800, color: completed ? '#008D63' : '#1A1F25' }}>
-                        {currentCount}
-                    </span>
-                    <span style={{ fontSize: 12, color: '#6C7278' }}>/ {item.count}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <span style={{ fontSize: 18, fontWeight: 800, color: completed ? '#008D63' : textMain }}>{currentCount}</span>
+                    <span style={{ fontSize: 12, color: textMuted }}>/ {item.count}</span>
                     {currentCount > 0 && (
                         <button onClick={(e) => { e.stopPropagation(); reset(); }} style={{
-                            width: 22, height: 22, borderRadius: '50%', background: '#F0F2F5',
+                            width: 22, height: 22, borderRadius: '50%', background: subtleBg,
                             border: 'none', cursor: 'pointer', fontSize: 10, display: 'flex',
-                            alignItems: 'center', justifyContent: 'center', color: '#6C7278',
+                            alignItems: 'center', justifyContent: 'center', color: textMuted,
                         }}>↺</button>
                     )}
                 </div>
             </div>
-
-            {/* Progress bar */}
-            <div style={{ height: 3, background: '#F0F2F5', borderRadius: 10, marginBottom: 16, overflow: 'hidden' }}>
-                <div style={{
-                    height: '100%', width: `${(currentCount / item.count) * 100}%`,
-                    background: completed ? '#008D63' : '#008D63',
-                    borderRadius: 10, transition: 'width 0.2s ease',
-                }} />
+            <div style={{ height: 3, background: subtleBg, borderRadius: 10, marginBottom: 16, overflow: 'hidden' }}>
+                <div style={{ height: '100%', width: `${(currentCount / item.count) * 100}%`, background: '#008D63', borderRadius: 10, transition: 'width 0.2s ease' }} />
             </div>
-
-            {/* Arabic text */}
-            <p className="font-arabic" style={{
-                textAlign: 'right', direction: 'rtl', fontSize: 24, lineHeight: '48px',
-                color: '#1A1F25', marginBottom: 12,
-            }}>
-                {item.arabic}
-            </p>
-
-            {/* Latin */}
+            <p className="font-arabic" style={{ textAlign: 'right', direction: 'rtl', fontSize: 24, lineHeight: '48px', color: textMain, marginBottom: 12 }}>{item.arabic}</p>
             <p style={{ fontSize: 13, color: '#008D63', fontStyle: 'italic', marginBottom: 8, lineHeight: 1.5 }}>{item.latin}</p>
-
-            {/* Meaning */}
-            <p style={{ fontSize: 13, color: '#6C7278', lineHeight: 1.6 }}>{item.meaning}</p>
-
-            {/* Tap hint */}
+            <p style={{ fontSize: 13, color: textMuted, lineHeight: 1.6 }}>{item.meaning}</p>
             {!completed && (
-                <p style={{ fontSize: 11, color: '#9CA3AF', textAlign: 'center', marginTop: 12, fontWeight: 500 }}>
+                <p style={{ fontSize: 11, color: isDark ? '#6B7280' : '#9CA3AF', textAlign: 'center', marginTop: 12, fontWeight: 500 }}>
                     👆 Tap untuk menghitung
                 </p>
             )}
@@ -164,18 +126,20 @@ function DzikrItemCard({ item, index }: { item: typeof CATEGORIES[0]["items"][0]
 
 export default function DzikirPage() {
     const [activeCategory, setActiveCategory] = useState<string | null>(null);
-
     const selectedCategory = CATEGORIES.find(c => c.id === activeCategory);
 
+    const { isDark, bgPage, bgCard, textMain, textMuted, borderColor, subtleBg } = useThemeColors();
+    const { t } = useLanguage();
+
     return (
-        <div style={{ paddingTop: 16, paddingBottom: 100, minHeight: '100vh', background: '#F7F9FB' }}>
+        <div style={{ paddingTop: 16, paddingBottom: 100, minHeight: '100vh', background: bgPage, transition: 'background 0.3s' }}>
             {/* Header */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 20px', marginBottom: 24 }}>
-                <Link href="/" style={{ width: 40, height: 40, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#F0F2F5', textDecoration: 'none' }}>
-                    <ArrowLeft size={22} color="#1A1F25" />
+                <Link href="/" style={{ width: 40, height: 40, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: subtleBg, textDecoration: 'none' }}>
+                    <ArrowLeft size={22} color={textMain} />
                 </Link>
-                <h1 style={{ fontSize: 20, fontWeight: 800, color: '#1A1F25' }}>
-                    {activeCategory ? selectedCategory?.title : 'Dzikir & Doa'}
+                <h1 style={{ fontSize: 20, fontWeight: 800, color: textMain }}>
+                    {activeCategory ? selectedCategory?.title : t.dzikirTitle}
                 </h1>
                 <div style={{ width: 40 }} />
             </div>
@@ -201,33 +165,30 @@ export default function DzikirPage() {
 
                     {/* Category Cards */}
                     <div style={{ padding: '0 20px' }}>
-                        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#1A1F25', marginBottom: 12 }}>Pilih Kategori</h3>
+                        <h3 style={{ fontSize: 16, fontWeight: 700, color: textMain, marginBottom: 12 }}>{t.selectCategory}</h3>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                             {CATEGORIES.map((cat) => (
-                                <button
-                                    key={cat.id}
-                                    onClick={() => setActiveCategory(cat.id)}
-                                    style={{
-                                        display: 'flex', alignItems: 'center', gap: 16, padding: '16px 18px',
-                                        borderRadius: 18, background: '#FFFFFF', border: '1px solid #F0F2F5',
-                                        cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s',
-                                        boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
-                                    }}
+                                <button key={cat.id} onClick={() => setActiveCategory(cat.id)} style={{
+                                    display: 'flex', alignItems: 'center', gap: 16, padding: '16px 18px',
+                                    borderRadius: 18, background: bgCard, border: `1px solid ${borderColor}`,
+                                    cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s',
+                                    boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+                                }}
                                     onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateX(4px)'; e.currentTarget.style.borderColor = cat.color; }}
-                                    onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateX(0)'; e.currentTarget.style.borderColor = '#F0F2F5'; }}
+                                    onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateX(0)'; e.currentTarget.style.borderColor = borderColor; }}
                                 >
                                     <div style={{
-                                        width: 52, height: 52, borderRadius: 16, background: cat.bgColor,
-                                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                        fontSize: 28, flexShrink: 0,
+                                        width: 52, height: 52, borderRadius: 16,
+                                        background: isDark ? `${cat.color}15` : cat.bgColor,
+                                        display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, flexShrink: 0,
                                     }}>
                                         {cat.icon}
                                     </div>
                                     <div style={{ flex: 1 }}>
-                                        <h4 style={{ fontSize: 16, fontWeight: 700, color: '#1A1F25', marginBottom: 2 }}>{cat.title}</h4>
-                                        <p style={{ fontSize: 12, color: '#6C7278' }}>{cat.desc} • {cat.items.length} dzikir</p>
+                                        <h4 style={{ fontSize: 16, fontWeight: 700, color: textMain, marginBottom: 2 }}>{cat.title}</h4>
+                                        <p style={{ fontSize: 12, color: textMuted }}>{cat.desc} • {cat.items.length} dzikir</p>
                                     </div>
-                                    <ChevronRight size={20} color="#9CA3AF" />
+                                    <ChevronRight size={20} color={textMuted} />
                                 </button>
                             ))}
                         </div>
@@ -235,7 +196,7 @@ export default function DzikirPage() {
 
                     {/* Quick Dzikir */}
                     <div style={{ padding: '28px 20px 0' }}>
-                        <h3 style={{ fontSize: 16, fontWeight: 700, color: '#1A1F25', marginBottom: 12 }}>Dzikir Harian</h3>
+                        <h3 style={{ fontSize: 16, fontWeight: 700, color: textMain, marginBottom: 12 }}>{t.dailyDzikir}</h3>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
                             {[
                                 { arabic: "سُبْحَانَ اللّٰهِ", latin: "SubhanAllah", target: 33 },
@@ -244,47 +205,41 @@ export default function DzikirPage() {
                                 { arabic: "أَسْتَغْفِرُ اللّٰهَ", latin: "Astaghfirullah", target: 100 },
                             ].map((d) => (
                                 <Link key={d.latin} href="/tasbih" style={{
-                                    padding: '16px 14px', borderRadius: 16, background: '#FFFFFF',
-                                    border: '1px solid #F0F2F5', textDecoration: 'none', textAlign: 'center',
-                                    boxShadow: '0 2px 8px rgba(0,0,0,0.03)',
+                                    padding: '16px 14px', borderRadius: 16, background: bgCard,
+                                    border: `1px solid ${borderColor}`, textDecoration: 'none', textAlign: 'center',
+                                    boxShadow: '0 2px 8px rgba(0,0,0,0.03)', transition: 'all 0.3s',
                                 }}>
                                     <p className="font-arabic" style={{ fontSize: 18, color: '#008D63', marginBottom: 4, fontWeight: 700 }}>{d.arabic}</p>
-                                    <p style={{ fontSize: 12, color: '#6C7278', fontWeight: 500 }}>{d.latin}</p>
-                                    <p style={{ fontSize: 10, color: '#9CA3AF', marginTop: 2 }}>{d.target}x</p>
+                                    <p style={{ fontSize: 12, color: textMuted, fontWeight: 500 }}>{d.latin}</p>
+                                    <p style={{ fontSize: 10, color: isDark ? '#6B7280' : '#9CA3AF', marginTop: 2 }}>{d.target}x</p>
                                 </Link>
                             ))}
                         </div>
                     </div>
                 </>
             ) : (
-                /* ========== DZIKIR DETAIL VIEW ========== */
                 <div style={{ padding: '0 20px' }}>
-                    {/* Back button */}
-                    <button
-                        onClick={() => setActiveCategory(null)}
-                        style={{
-                            display: 'flex', alignItems: 'center', gap: 8, padding: '10px 16px',
-                            borderRadius: 12, background: selectedCategory?.bgColor || '#F0F2F5',
-                            border: 'none', cursor: 'pointer', marginBottom: 20,
-                            fontSize: 13, fontWeight: 600, color: selectedCategory?.color || '#1A1F25',
-                        }}
-                    >
-                        <ArrowLeft size={16} /> Kembali ke kategori
+                    <button onClick={() => setActiveCategory(null)} style={{
+                        display: 'flex', alignItems: 'center', gap: 8, padding: '10px 16px',
+                        borderRadius: 12, background: isDark ? `${selectedCategory?.color}15` : (selectedCategory?.bgColor || subtleBg),
+                        border: 'none', cursor: 'pointer', marginBottom: 20,
+                        fontSize: 13, fontWeight: 600, color: selectedCategory?.color || textMain,
+                    }}>
+                        <ArrowLeft size={16} /> {t.backToCategory}
                     </button>
 
-                    {/* Category header */}
                     <div style={{
                         display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20,
-                        padding: '16px', borderRadius: 16, background: selectedCategory?.bgColor,
+                        padding: '16px', borderRadius: 16,
+                        background: isDark ? `${selectedCategory?.color}15` : selectedCategory?.bgColor,
                     }}>
                         <span style={{ fontSize: 36 }}>{selectedCategory?.icon}</span>
                         <div>
-                            <h2 style={{ fontSize: 20, fontWeight: 800, color: '#1A1F25' }}>{selectedCategory?.title}</h2>
-                            <p style={{ fontSize: 12, color: '#6C7278' }}>{selectedCategory?.desc} • {selectedCategory?.items.length} dzikir</p>
+                            <h2 style={{ fontSize: 20, fontWeight: 800, color: textMain }}>{selectedCategory?.title}</h2>
+                            <p style={{ fontSize: 12, color: textMuted }}>{selectedCategory?.desc} • {selectedCategory?.items.length} dzikir</p>
                         </div>
                     </div>
 
-                    {/* Dzikir items */}
                     {selectedCategory?.items.map((item, i) => (
                         <DzikrItemCard key={i} item={item} index={i} />
                     ))}

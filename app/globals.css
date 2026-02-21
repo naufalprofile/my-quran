@@ -1,15 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Amiri:wght@400;700&display=swap');
 @import "tailwindcss";
 
-@theme {
+:root {
   --color-primary: #008D63;
   --color-primary-light: #E6F3EF;
   --color-primary-dark: #06403D;
   --color-accent: #1ED760;
-  --color-dark: #1A1F25;
-  --color-muted: #6C7278;
-  --color-surface: #FFFFFF;
   --color-bg: #F7F9FB;
+  --color-surface: #FFFFFF;
+  --color-card-bg: #FFFFFF;
+  --color-text: #1A1F25;
+  --color-text-muted: #6C7278;
   --color-border: #E8ECEF;
   --color-danger: #EF4444;
 }
@@ -21,12 +22,13 @@
 }
 
 body {
-  background-color: #F7F9FB;
-  color: #1A1F25;
+  background-color: var(--color-bg);
+  color: var(--color-text);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .font-arabic {
@@ -34,7 +36,7 @@ body {
 }
 
 .premium-gradient {
-  background: linear-gradient(135deg, #008D63 0%, #06403D 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
 }
 
 /* Custom Scrollbar */
@@ -47,6 +49,6 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #E8ECEF;
+  background: var(--color-border);
   border-radius: 10px;
 }

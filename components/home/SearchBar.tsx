@@ -1,6 +1,8 @@
 "use client";
 
 import { Search, SlidersHorizontal } from "lucide-react";
+import { useThemeColors } from "@/components/ThemeProvider";
+import { useLanguage } from "@/components/LanguageProvider";
 
 interface SearchBarProps {
     value: string;
@@ -8,6 +10,9 @@ interface SearchBarProps {
 }
 
 export default function SearchBar({ value, onChange }: SearchBarProps) {
+    const { isDark, bgCard, textMain, textMuted, borderColor } = useThemeColors();
+    const { t } = useLanguage();
+
     return (
         <div style={{
             margin: '0 20px 28px',
@@ -16,20 +21,21 @@ export default function SearchBar({ value, onChange }: SearchBarProps) {
             gap: 12,
             padding: '0 16px',
             height: 52,
-            background: '#FFFFFF',
+            background: bgCard,
             borderRadius: 16,
             boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
-            border: '1px solid #E8ECEF',
+            border: `1px solid ${borderColor}`,
+            transition: 'all 0.3s',
         }}>
-            <Search size={20} color="#6C7278" />
+            <Search size={20} color={textMuted} />
             <input
                 type="text"
-                placeholder="Search Surah, Ayah, or Topic..."
+                placeholder={t.searchPlaceholder}
                 value={value}
                 onChange={(e) => onChange(e.target.value)}
                 style={{
                     flex: 1, border: 'none', outline: 'none', background: 'transparent',
-                    fontSize: 14, fontWeight: 500, color: '#1A1F25',
+                    fontSize: 14, fontWeight: 500, color: textMain,
                     fontFamily: 'Inter, sans-serif',
                 }}
             />
