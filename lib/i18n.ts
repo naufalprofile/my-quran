@@ -130,6 +130,22 @@ export interface Translations {
     congratsKhatam: string;
     surahRemaining: string;
     surahAlreadyRead: string;
+    outOf: string;
+    // Achievement titles & descriptions
+    achFirstStep: string;
+    achFirstStepDesc: string;
+    achFaithful: string;
+    achFaithfulDesc: string;
+    achLover: string;
+    achLoverDesc: string;
+    achFirstJuz: string;
+    achFirstJuzDesc: string;
+    achHalfway: string;
+    achHalfwayDesc: string;
+    achAlmostDone: string;
+    achAlmostDoneDesc: string;
+    achKhatam: string;
+    achKhatamDesc: string;
 
     // Kiblat
     qiblaDirection: string;
@@ -145,6 +161,11 @@ export interface Translations {
     awardKhatam: string;
     awardKhatamDesc: string;
     thankYou: string;
+
+    // Dzikir extra
+    dzikirHeroQuote: string;
+    dzikirHeroRef: string;
+    dzikirCount: string;
 }
 
 export const LANGUAGES: { code: string; name: string; nativeName: string; flag: string }[] = [
@@ -328,6 +349,24 @@ const translations: Record<string, Translations> = {
         awardKhatam: "Award Khatam! 🎉",
         awardKhatamDesc: "Alhamdulillah! Selamat Anda telah menyelesaikan bacaan seluruh 114 Surah di Al-Qur'an.",
         thankYou: "Terima Kasih",
+        outOf: "dari",
+        achFirstStep: "Langkah Pertama",
+        achFirstStepDesc: "Baca Surah pertamamu",
+        achFaithful: "Pembaca Setia",
+        achFaithfulDesc: "Selesaikan 5 Surah",
+        achLover: "Pecinta Quran",
+        achLoverDesc: "Selesaikan 10 Surah",
+        achFirstJuz: "Juz Pertama",
+        achFirstJuzDesc: "Selesaikan 20 Surah",
+        achHalfway: "Setengah Jalan",
+        achHalfwayDesc: "Selesaikan 57 Surah",
+        achAlmostDone: "Hampir Khatam",
+        achAlmostDoneDesc: "Selesaikan 100 Surah",
+        achKhatam: "Khatam Al-Quran",
+        achKhatamDesc: "Selesaikan semua 114 Surah",
+        dzikirHeroQuote: "\"Ketahuilah, hanya dengan mengingat Allah hati menjadi tenteram.\"",
+        dzikirHeroRef: "QS. Ar-Ra'd: 28",
+        dzikirCount: "dzikir",
     },
 
     // ============================================================
@@ -448,6 +487,24 @@ const translations: Record<string, Translations> = {
         awardKhatam: "Khatam Award! 🎉",
         awardKhatamDesc: "Alhamdulillah! Congratulations on completing all 114 Surahs of the Quran.",
         thankYou: "Thank You",
+        outOf: "of",
+        achFirstStep: "First Step",
+        achFirstStepDesc: "Read your first Surah",
+        achFaithful: "Faithful Reader",
+        achFaithfulDesc: "Complete 5 Surahs",
+        achLover: "Quran Lover",
+        achLoverDesc: "Complete 10 Surahs",
+        achFirstJuz: "First Juz",
+        achFirstJuzDesc: "Complete 20 Surahs",
+        achHalfway: "Halfway There",
+        achHalfwayDesc: "Complete 57 Surahs",
+        achAlmostDone: "Almost Done",
+        achAlmostDoneDesc: "Complete 100 Surahs",
+        achKhatam: "Khatam Al-Quran",
+        achKhatamDesc: "Complete all 114 Surahs",
+        dzikirHeroQuote: "\"Verily, in the remembrance of Allah do hearts find rest.\"",
+        dzikirHeroRef: "QS. Ar-Ra'd: 28",
+        dzikirCount: "dhikr",
     },
 
     // ============================================================
@@ -568,6 +625,24 @@ const translations: Record<string, Translations> = {
         awardKhatam: "جائزة الختم! 🎉",
         awardKhatamDesc: "الحمد لله! تهانينا على إكمال قراءة جميع 114 سورة من القرآن الكريم.",
         thankYou: "شكراً لك",
+        outOf: "من",
+        achFirstStep: "الخطوة الأولى",
+        achFirstStepDesc: "اقرأ سورتك الأولى",
+        achFaithful: "القارئ المخلص",
+        achFaithfulDesc: "أكمل 5 سور",
+        achLover: "محب القرآن",
+        achLoverDesc: "أكمل 10 سور",
+        achFirstJuz: "الجزء الأول",
+        achFirstJuzDesc: "أكمل 20 سورة",
+        achHalfway: "في منتصف الطريق",
+        achHalfwayDesc: "أكمل 57 سورة",
+        achAlmostDone: "على وشك الانتهاء",
+        achAlmostDoneDesc: "أكمل 100 سورة",
+        achKhatam: "ختم القرآن",
+        achKhatamDesc: "أكمل جميع 114 سورة",
+        dzikirHeroQuote: "\"ألا بذكر الله تطمئن القلوب\"",
+        dzikirHeroRef: "سورة الرعد: 28",
+        dzikirCount: "ذكر",
     },
 
     // ============================================================
@@ -688,6 +763,24 @@ const translations: Record<string, Translations> = {
         awardKhatam: "Anugerah Khatam! 🎉",
         awardKhatamDesc: "Alhamdulillah! Tahniah kerana telah melengkapkan bacaan kesemua 114 Surah Al-Quran.",
         thankYou: "Terima Kasih",
+        outOf: "daripada",
+        achFirstStep: "Langkah Pertama",
+        achFirstStepDesc: "Baca Surah pertama anda",
+        achFaithful: "Pembaca Setia",
+        achFaithfulDesc: "Selesaikan 5 Surah",
+        achLover: "Pencinta Quran",
+        achLoverDesc: "Selesaikan 10 Surah",
+        achFirstJuz: "Juz Pertama",
+        achFirstJuzDesc: "Selesaikan 20 Surah",
+        achHalfway: "Separuh Jalan",
+        achHalfwayDesc: "Selesaikan 57 Surah",
+        achAlmostDone: "Hampir Selesai",
+        achAlmostDoneDesc: "Selesaikan 100 Surah",
+        achKhatam: "Khatam Al-Quran",
+        achKhatamDesc: "Selesaikan semua 114 Surah",
+        dzikirHeroQuote: "\"Ketahuilah, hanya dengan mengingati Allah hati menjadi tenteram.\"",
+        dzikirHeroRef: "QS. Ar-Ra'd: 28",
+        dzikirCount: "zikir",
     },
 
     // ============================================================
@@ -808,6 +901,24 @@ const translations: Record<string, Translations> = {
         awardKhatam: "Hatim Ödülü! 🎉",
         awardKhatamDesc: "Elhamdülillah! Kur'an-ı Kerim'in 114 suresini tamamladığınız için tebrikler.",
         thankYou: "Teşekkürler",
+        outOf: "toplam",
+        achFirstStep: "İlk Adım",
+        achFirstStepDesc: "İlk sureni oku",
+        achFaithful: "Sadık Okuyucu",
+        achFaithfulDesc: "5 Sure tamamla",
+        achLover: "Kur'an Aşığı",
+        achLoverDesc: "10 Sure tamamla",
+        achFirstJuz: "İlk Cüz",
+        achFirstJuzDesc: "20 Sure tamamla",
+        achHalfway: "Yarı Yolda",
+        achHalfwayDesc: "57 Sure tamamla",
+        achAlmostDone: "Neredeyse Bitti",
+        achAlmostDoneDesc: "100 Sure tamamla",
+        achKhatam: "Hatim",
+        achKhatamDesc: "Tüm 114 Sureyi tamamla",
+        dzikirHeroQuote: "\"Bilin ki, kalpler ancak Allah'ı anmakla huzur bulur.\"",
+        dzikirHeroRef: "Ra'd Suresi: 28",
+        dzikirCount: "zikir",
     },
 
     // ============================================================
@@ -928,6 +1039,24 @@ const translations: Record<string, Translations> = {
         awardKhatam: "Khatam Atteint! 🎉",
         awardKhatamDesc: "Alhamdulillah! Félicitations pour avoir lu les 114 sourates du Coran.",
         thankYou: "Merci",
+        outOf: "sur",
+        achFirstStep: "Premier Pas",
+        achFirstStepDesc: "Lisez votre première Sourate",
+        achFaithful: "Lecteur Fidèle",
+        achFaithfulDesc: "Complétez 5 Sourates",
+        achLover: "Amoureux du Coran",
+        achLoverDesc: "Complétez 10 Sourates",
+        achFirstJuz: "Premier Juz",
+        achFirstJuzDesc: "Complétez 20 Sourates",
+        achHalfway: "À Mi-Chemin",
+        achHalfwayDesc: "Complétez 57 Sourates",
+        achAlmostDone: "Presque Fini",
+        achAlmostDoneDesc: "Complétez 100 Sourates",
+        achKhatam: "Khatam Al-Coran",
+        achKhatamDesc: "Complétez les 114 Sourates",
+        dzikirHeroQuote: "\"C'est par le rappel d'Allah que les cœurs se tranquillisent.\"",
+        dzikirHeroRef: "QS. Ar-Ra'd: 28",
+        dzikirCount: "dhikr",
     },
 
     // ============================================================
@@ -1048,6 +1177,24 @@ const translations: Record<string, Translations> = {
         awardKhatam: "¡Premio Khatam! 🎉",
         awardKhatamDesc: "¡Alhamdulillah! Felicidades por completar las 114 suras del Corán.",
         thankYou: "Gracias",
+        outOf: "de",
+        achFirstStep: "Primer Paso",
+        achFirstStepDesc: "Lee tu primera Sura",
+        achFaithful: "Lector Fiel",
+        achFaithfulDesc: "Completa 5 Suras",
+        achLover: "Amante del Corán",
+        achLoverDesc: "Completa 10 Suras",
+        achFirstJuz: "Primer Juz",
+        achFirstJuzDesc: "Completa 20 Suras",
+        achHalfway: "A Medio Camino",
+        achHalfwayDesc: "Completa 57 Suras",
+        achAlmostDone: "Casi Terminado",
+        achAlmostDoneDesc: "Completa 100 Suras",
+        achKhatam: "Khatam Al-Corán",
+        achKhatamDesc: "Completa las 114 Suras",
+        dzikirHeroQuote: "\"En el recuerdo de Allah los corazones encuentran sosiego.\"",
+        dzikirHeroRef: "QS. Ar-Ra'd: 28",
+        dzikirCount: "dhikr",
     },
 };
 

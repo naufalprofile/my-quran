@@ -27,13 +27,13 @@ export default function AwardsPage() {
     const percentage = Math.round((readCount / 114) * 100);
 
     const achievements = [
-        { title: "Langkah Pertama", desc: "Baca Surah pertamamu", icon: "📖", target: 1, color: "#008D63", bg: "#E6F3EF" },
-        { title: "Pembaca Setia", desc: "Selesaikan 5 Surah", icon: "⭐", target: 5, color: "#E65100", bg: "#FFF3E0" },
-        { title: "Pecinta Quran", desc: "Selesaikan 10 Surah", icon: "🌟", target: 10, color: "#7C3AED", bg: "#F3E8FF" },
-        { title: "Juz Pertama", desc: "Selesaikan 20 Surah", icon: "📚", target: 20, color: "#1E40AF", bg: "#DBEAFE" },
-        { title: "Setengah Jalan", desc: "Selesaikan 57 Surah", icon: "🏅", target: 57, color: "#B45309", bg: "#FEF3C7" },
-        { title: "Hampir Khatam", desc: "Selesaikan 100 Surah", icon: "🔥", target: 100, color: "#DC2626", bg: "#FEE2E2" },
-        { title: "Khatam Al-Quran", desc: "Selesaikan semua 114 Surah", icon: "👑", target: 114, color: "#008D63", bg: "#E6F3EF" },
+        { title: t.achFirstStep, desc: t.achFirstStepDesc, icon: "📖", target: 1, color: "#008D63", bg: "#E6F3EF" },
+        { title: t.achFaithful, desc: t.achFaithfulDesc, icon: "⭐", target: 5, color: "#E65100", bg: "#FFF3E0" },
+        { title: t.achLover, desc: t.achLoverDesc, icon: "🌟", target: 10, color: "#7C3AED", bg: "#F3E8FF" },
+        { title: t.achFirstJuz, desc: t.achFirstJuzDesc, icon: "📚", target: 20, color: "#1E40AF", bg: "#DBEAFE" },
+        { title: t.achHalfway, desc: t.achHalfwayDesc, icon: "🏅", target: 57, color: "#B45309", bg: "#FEF3C7" },
+        { title: t.achAlmostDone, desc: t.achAlmostDoneDesc, icon: "🔥", target: 100, color: "#DC2626", bg: "#FEE2E2" },
+        { title: t.achKhatam, desc: t.achKhatamDesc, icon: "👑", target: 114, color: "#008D63", bg: "#E6F3EF" },
     ];
 
     const circleR = 70;
@@ -70,7 +70,7 @@ export default function AwardsPage() {
                         </svg>
                         <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                             <span style={{ fontSize: 32, fontWeight: 800, lineHeight: 1 }}>{readCount}</span>
-                            <span style={{ fontSize: 11, opacity: 0.7, fontWeight: 600 }}>dari 114</span>
+                            <span style={{ fontSize: 11, opacity: 0.7, fontWeight: 600 }}>{t.outOf} 114</span>
                         </div>
                     </div>
                     <div style={{ flex: 1 }}>
@@ -80,8 +80,8 @@ export default function AwardsPage() {
                             {readCount === 0 ? t.startJourney : readCount >= 114 ? t.congratsKhatam : `${114 - readCount} ${t.surahRemaining}`}
                         </p>
                         <div style={{ display: 'flex', gap: 6, marginTop: 12 }}>
-                            <div style={{ padding: '4px 10px', borderRadius: 20, background: 'rgba(255,255,255,0.15)', fontSize: 10, fontWeight: 700 }}>✅ {readCount} Dibaca</div>
-                            <div style={{ padding: '4px 10px', borderRadius: 20, background: 'rgba(255,255,255,0.15)', fontSize: 10, fontWeight: 700 }}>📖 {114 - readCount} Sisa</div>
+                            <div style={{ padding: '4px 10px', borderRadius: 20, background: 'rgba(255,255,255,0.15)', fontSize: 10, fontWeight: 700 }}>✅ {readCount} {t.surahRead}</div>
+                            <div style={{ padding: '4px 10px', borderRadius: 20, background: 'rgba(255,255,255,0.15)', fontSize: 10, fontWeight: 700 }}>📖 {114 - readCount} {t.remaining}</div>
                         </div>
                     </div>
                 </div>

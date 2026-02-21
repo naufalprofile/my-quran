@@ -6,6 +6,7 @@ import { Search, BookOpen, ChevronRight } from "lucide-react";
 import BottomNav from "@/components/navigation/BottomNav";
 import SurahCard from "@/components/home/SurahCard";
 import { useThemeColors } from "@/components/ThemeProvider";
+import { useLanguage } from "@/components/LanguageProvider";
 
 interface Surah {
     nomor: number;
@@ -185,13 +186,14 @@ export default function QuranPage() {
     );
 
     const { isDark, bgPage, bgCard, textMain, textMuted, borderColor } = useThemeColors();
+    const { t } = useLanguage();
 
     return (
         <div style={{ paddingTop: 20, paddingBottom: 100, minHeight: '100vh', background: bgPage, transition: 'background 0.3s' }}>
             {/* Header */}
             <div style={{ textAlign: 'center', padding: '0 20px', marginBottom: 20 }}>
-                <h1 style={{ fontSize: 24, fontWeight: 800, color: textMain, marginBottom: 4 }}>Al-Quran</h1>
-                <p style={{ fontSize: 14, color: textMuted }}>Baca dan pelajari kitab suci</p>
+                <h1 style={{ fontSize: 24, fontWeight: 800, color: textMain, marginBottom: 4 }}>{t.quranTitle}</h1>
+                <p style={{ fontSize: 14, color: textMuted }}>{t.quranSubtitle}</p>
             </div>
 
             {/* Search Bar */}
@@ -204,7 +206,7 @@ export default function QuranPage() {
                     <Search size={20} color={textMuted} />
                     <input
                         type="text"
-                        placeholder={searchMode === "surah" ? 'Cari nama surah...' : 'Contoh: Al Baqarah 255'}
+                        placeholder={searchMode === "surah" ? t.searchSurahPlaceholder : t.searchAyatPlaceholder}
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         style={{ flex: 1, border: 'none', outline: 'none', fontSize: 14, color: textMain, background: 'transparent' }}
@@ -230,7 +232,7 @@ export default function QuranPage() {
                             color: searchMode === "surah" ? 'white' : textMuted,
                             transition: 'all 0.2s',
                         }}
-                    >📖 Cari Surah</button>
+                    >📖 {t.searchSurah}</button>
                     <button
                         onClick={() => setSearchMode("ayat")}
                         style={{
@@ -239,7 +241,7 @@ export default function QuranPage() {
                             color: searchMode === "ayat" ? 'white' : textMuted,
                             transition: 'all 0.2s',
                         }}
-                    >🔍 Cari Ayat</button>
+                    >🔍 {t.searchAyat}</button>
                 </div>
             </div>
 
@@ -247,13 +249,13 @@ export default function QuranPage() {
             {searchMode === "ayat" && !searchQuery && (
                 <div style={{ padding: '0 20px', marginBottom: 16 }}>
                     <div style={{ padding: '14px 16px', borderRadius: 14, background: '#E6F3EF', border: '1px solid #B2DFCF' }}>
-                        <p style={{ fontSize: 12, fontWeight: 700, color: '#008D63', marginBottom: 8 }}>💡 Cara Pencarian:</p>
+                        <p style={{ fontSize: 12, fontWeight: 700, color: '#008D63', marginBottom: 8 }}>💡 {t.searchTips}</p>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
                             {[
-                                { q: "Al Baqarah 255", r: "→ Ayat Kursi" },
-                                { q: "Al Fatihah 3", r: "→ Al-Fatihah Ayat 3" },
-                                { q: "Yasin", r: "→ Tampilkan semua ayat Yasin" },
-                                { q: "An Nisa 1", r: "→ An-Nisa' Ayat 1" },
+                                { q: "Al Baqarah 255", r: `→ ${t.ayat} Kursi` },
+                                { q: "Al Fatihah 3", r: `→ Al-Fatihah ${t.ayat} 3` },
+                                { q: "Yasin", r: `→ ${t.showAllAyat} Yasin` },
+                                { q: "An Nisa 1", r: `→ An-Nisa' ${t.ayat} 1` },
                             ].map((tip) => (
                                 <button key={tip.q} onClick={() => setSearchQuery(tip.q)} style={{
                                     display: 'flex', justifyContent: 'space-between', padding: '8px 12px',

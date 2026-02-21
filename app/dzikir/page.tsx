@@ -7,67 +7,69 @@ import BottomNav from "@/components/navigation/BottomNav";
 import { useThemeColors } from "@/components/ThemeProvider";
 import { useLanguage } from "@/components/LanguageProvider";
 
-const CATEGORIES = [
-    {
-        id: "pagi",
-        title: "Dzikir Pagi",
-        icon: "🌅",
-        color: "#FF9800",
-        bgColor: "#FFF3E0",
-        desc: "Dibaca setelah Subuh",
-        items: [
-            { arabic: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلّٰهِ وَالْحَمْدُ لِلّٰهِ، لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيكَ لَهُ", latin: "Ashbahnaa wa ashbahal mulku lillaahi wal hamdu lillaah, laa ilaaha illallaahu wahdahu laa syariika lah", meaning: "Kami memasuki waktu pagi dan kerajaan hanya milik Allah. Segala puji bagi Allah. Tidak ada ilah yang berhak disembah kecuali Allah semata, tidak ada sekutu bagi-Nya.", count: 1 },
-            { arabic: "اَللّٰهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ", latin: "Allaahumma bika ashbahnaa, wa bika amsainaa, wa bika nahyaa, wa bika namuutu wa ilaikan nusyuur", meaning: "Ya Allah, dengan rahmat dan pertolongan-Mu kami memasuki waktu pagi, dan dengan rahmat dan pertolongan-Mu kami memasuki waktu petang. Dengan rahmat dan pertolongan-Mu kami hidup dan dengan kehendak-Mu kami mati. Dan kepada-Mu kebangkitan.", count: 1 },
-            { arabic: "سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ", latin: "Subhaanallaahi wa bihamdih", meaning: "Maha Suci Allah dan dengan memuji-Nya.", count: 100 },
-            { arabic: "لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", latin: "Laa ilaaha illallaahu wahdahu laa syariika lah, lahul mulku wa lahul hamdu wa huwa 'alaa kulli syai'in qadiir", meaning: "Tidak ada ilah yang berhak disembah kecuali Allah semata, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala pujian. Dan Dia Maha Kuasa atas segala sesuatu.", count: 10 },
-            { arabic: "أَسْتَغْفِرُ اللّٰهَ وَأَتُوبُ إِلَيْهِ", latin: "Astaghfirullaaha wa atuubu ilaih", meaning: "Aku memohon ampun kepada Allah dan bertobat kepada-Nya.", count: 100 },
-        ],
-    },
-    {
-        id: "petang",
-        title: "Dzikir Petang",
-        icon: "🌇",
-        color: "#7C3AED",
-        bgColor: "#F3E8FF",
-        desc: "Dibaca setelah Ashar",
-        items: [
-            { arabic: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلّٰهِ وَالْحَمْدُ لِلّٰهِ، لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيكَ لَهُ", latin: "Amsainaa wa amsal mulku lillaahi wal hamdu lillaah, laa ilaaha illallaahu wahdahu laa syariika lah", meaning: "Kami memasuki waktu petang dan kerajaan hanya milik Allah. Segala puji bagi Allah. Tidak ada ilah yang berhak disembah kecuali Allah semata, tidak ada sekutu bagi-Nya.", count: 1 },
-            { arabic: "اَللّٰهُمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ الْمَصِيرُ", latin: "Allaahumma bika amsainaa, wa bika ashbahnaa, wa bika nahyaa, wa bika namuutu wa ilaikal mashiir", meaning: "Ya Allah, dengan rahmat dan pertolongan-Mu kami memasuki waktu petang, dan dengan rahmat dan pertolongan-Mu kami memasuki waktu pagi. Dengan rahmat dan pertolongan-Mu kami hidup dan dengan kehendak-Mu kami mati. Dan kepada-Mu tempat kembali.", count: 1 },
-            { arabic: "سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ", latin: "Subhaanallaahi wa bihamdih", meaning: "Maha Suci Allah dan dengan memuji-Nya.", count: 100 },
-            { arabic: "أَعُوذُ بِكَلِمَاتِ اللّٰهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ", latin: "A'uudzu bikalimaatillaahit taammaati min syarri maa khalaq", meaning: "Aku berlindung dengan kalimat-kalimat Allah yang sempurna dari kejahatan makhluk-Nya.", count: 3 },
-        ],
-    },
-    {
-        id: "sholat",
-        title: "Setelah Sholat",
-        icon: "🤲",
-        color: "#008D63",
-        bgColor: "#E6F3EF",
-        desc: "Dibaca setelah salam",
-        items: [
-            { arabic: "أَسْتَغْفِرُ اللّٰهَ", latin: "Astaghfirullaah", meaning: "Aku memohon ampun kepada Allah.", count: 3 },
-            { arabic: "اَللّٰهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ", latin: "Allaahumma antas salaamu wa minkas salaamu tabaarakta yaa dzal jalaali wal ikraam", meaning: "Ya Allah, Engkau pemberi keselamatan, dan dari-Mu keselamatan. Mahasuci Engkau, wahai Tuhan pemilik keagungan dan kemuliaan.", count: 1 },
-            { arabic: "سُبْحَانَ اللّٰهِ", latin: "Subhaanallaah", meaning: "Maha Suci Allah.", count: 33 },
-            { arabic: "اَلْحَمْدُ لِلّٰهِ", latin: "Alhamdulillaah", meaning: "Segala puji bagi Allah.", count: 33 },
-            { arabic: "اَللّٰهُ أَكْبَرُ", latin: "Allaahu Akbar", meaning: "Allah Maha Besar.", count: 33 },
-            { arabic: "لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ", latin: "Laa ilaaha illallaahu wahdahu laa syariika lah, lahul mulku wa lahul hamdu wa huwa 'alaa kulli syai'in qadiir", meaning: "Tidak ada ilah yang berhak disembah kecuali Allah semata, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya pujian. Dan Dia Maha Kuasa atas segala sesuatu.", count: 1 },
-        ],
-    },
-    {
-        id: "tidur",
-        title: "Sebelum Tidur",
-        icon: "🌙",
-        color: "#1E40AF",
-        bgColor: "#DBEAFE",
-        desc: "Doa sebelum tidur",
-        items: [
-            { arabic: "بِاسْمِكَ اللّٰهُمَّ أَمُوتُ وَأَحْيَا", latin: "Bismikallaahumma amuutu wa ahyaa", meaning: "Dengan menyebut nama-Mu, ya Allah, aku mati dan aku hidup.", count: 1 },
-            { arabic: "اَللّٰهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ", latin: "Allaahumma qinii 'adzaabaka yauma tab'atsu 'ibaadak", meaning: "Ya Allah, lindungilah aku dari azab-Mu pada hari Engkau membangkitkan hamba-hamba-Mu.", count: 3 },
-        ],
-    },
-];
+function getCategories(t: ReturnType<typeof import("@/components/LanguageProvider").useLanguage>["t"]) {
+    return [
+        {
+            id: "pagi",
+            title: t.dzikirMorning,
+            icon: "🌅",
+            color: "#FF9800",
+            bgColor: "#FFF3E0",
+            desc: t.dzikirMorningDesc,
+            items: [
+                { arabic: "أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلّٰهِ وَالْحَمْدُ لِلّٰهِ، لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيكَ لَهُ", latin: "Ashbahnaa wa ashbahal mulku lillaahi wal hamdu lillaah, laa ilaaha illallaahu wahdahu laa syariika lah", meaning: "Kami memasuki waktu pagi dan kerajaan hanya milik Allah. Segala puji bagi Allah. Tidak ada ilah yang berhak disembah kecuali Allah semata, tidak ada sekutu bagi-Nya.", count: 1 },
+                { arabic: "اَللّٰهُمَّ بِكَ أَصْبَحْنَا، وَبِكَ أَمْسَيْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ النُّشُورُ", latin: "Allaahumma bika ashbahnaa, wa bika amsainaa, wa bika nahyaa, wa bika namuutu wa ilaikan nusyuur", meaning: "Ya Allah, dengan rahmat dan pertolongan-Mu kami memasuki waktu pagi, dan dengan rahmat dan pertolongan-Mu kami memasuki waktu petang. Dengan rahmat dan pertolongan-Mu kami hidup dan dengan kehendak-Mu kami mati. Dan kepada-Mu kebangkitan.", count: 1 },
+                { arabic: "سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ", latin: "Subhaanallaahi wa bihamdih", meaning: "Maha Suci Allah dan dengan memuji-Nya.", count: 100 },
+                { arabic: "لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلىٰ كُلِّ شَيْءٍ قَدِيرٌ", latin: "Laa ilaaha illallaahu wahdahu laa syariika lah, lahul mulku wa lahul hamdu wa huwa 'alaa kulli syai'in qadiir", meaning: "Tidak ada ilah yang berhak disembah kecuali Allah semata, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya segala pujian. Dan Dia Maha Kuasa atas segala sesuatu.", count: 10 },
+                { arabic: "أَسْتَغْفِرُ اللّٰهَ وَأَتُوبُ إِلَيْهِ", latin: "Astaghfirullaaha wa atuubu ilaih", meaning: "Aku memohon ampun kepada Allah dan bertobat kepada-Nya.", count: 100 },
+            ],
+        },
+        {
+            id: "petang",
+            title: t.dzikirEvening,
+            icon: "🌇",
+            color: "#7C3AED",
+            bgColor: "#F3E8FF",
+            desc: t.dzikirEveningDesc,
+            items: [
+                { arabic: "أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلّٰهِ وَالْحَمْدُ لِلّٰهِ، لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيكَ لَهُ", latin: "Amsainaa wa amsal mulku lillaahi wal hamdu lillaah, laa ilaaha illallaahu wahdahu laa syariika lah", meaning: "Kami memasuki waktu petang dan kerajaan hanya milik Allah. Segala puji bagi Allah. Tidak ada ilah yang berhak disembah kecuali Allah semata, tidak ada sekutu bagi-Nya.", count: 1 },
+                { arabic: "اَللّٰهُمَّ بِكَ أَمْسَيْنَا، وَبِكَ أَصْبَحْنَا، وَبِكَ نَحْيَا، وَبِكَ نَمُوتُ وَإِلَيْكَ الْمَصِيرُ", latin: "Allaahumma bika amsainaa, wa bika ashbahnaa, wa bika nahyaa, wa bika namuutu wa ilaikal mashiir", meaning: "Ya Allah, dengan rahmat dan pertolongan-Mu kami memasuki waktu petang, dan dengan rahmat dan pertolongan-Mu kami memasuki waktu pagi. Dengan rahmat dan pertolongan-Mu kami hidup dan dengan kehendak-Mu kami mati. Dan kepada-Mu tempat kembali.", count: 1 },
+                { arabic: "سُبْحَانَ اللّٰهِ وَبِحَمْدِهِ", latin: "Subhaanallaahi wa bihamdih", meaning: "Maha Suci Allah dan dengan memuji-Nya.", count: 100 },
+                { arabic: "أَعُوذُ بِكَلِمَاتِ اللّٰهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ", latin: "A'uudzu bikalimaatillaahit taammaati min syarri maa khalaq", meaning: "Aku berlindung dengan kalimat-kalimat Allah yang sempurna dari kejahatan makhluk-Nya.", count: 3 },
+            ],
+        },
+        {
+            id: "sholat",
+            title: t.dzikirAfterPrayer,
+            icon: "🤲",
+            color: "#008D63",
+            bgColor: "#E6F3EF",
+            desc: t.dzikirAfterPrayerDesc,
+            items: [
+                { arabic: "أَسْتَغْفِرُ اللّٰهَ", latin: "Astaghfirullaah", meaning: "Aku memohon ampun kepada Allah.", count: 3 },
+                { arabic: "اَللّٰهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ", latin: "Allaahumma antas salaamu wa minkas salaamu tabaarakta yaa dzal jalaali wal ikraam", meaning: "Ya Allah, Engkau pemberi keselamatan, dan dari-Mu keselamatan. Mahasuci Engkau, wahai Tuhan pemilik keagungan dan kemuliaan.", count: 1 },
+                { arabic: "سُبْحَانَ اللّٰهِ", latin: "Subhaanallaah", meaning: "Maha Suci Allah.", count: 33 },
+                { arabic: "اَلْحَمْدُ لِلّٰهِ", latin: "Alhamdulillaah", meaning: "Segala puji bagi Allah.", count: 33 },
+                { arabic: "اَللّٰهُ أَكْبَرُ", latin: "Allaahu Akbar", meaning: "Allah Maha Besar.", count: 33 },
+                { arabic: "لَا إِلٰهَ إِلَّا اللّٰهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ وَهُوَ عَلىٰ كُلِّ شَيْءٍ قَدِيرٌ", latin: "Laa ilaaha illallaahu wahdahu laa syariika lah, lahul mulku wa lahul hamdu wa huwa 'alaa kulli syai'in qadiir", meaning: "Tidak ada ilah yang berhak disembah kecuali Allah semata, tidak ada sekutu bagi-Nya. Bagi-Nya kerajaan dan bagi-Nya pujian. Dan Dia Maha Kuasa atas segala sesuatu.", count: 1 },
+            ],
+        },
+        {
+            id: "tidur",
+            title: t.dzikirBeforeSleep,
+            icon: "🌙",
+            color: "#1E40AF",
+            bgColor: "#DBEAFE",
+            desc: t.dzikirBeforeSleepDesc,
+            items: [
+                { arabic: "بِاسْمِكَ اللّٰهُمَّ أَمُوتُ وَأَحْيَا", latin: "Bismikallaahumma amuutu wa ahyaa", meaning: "Dengan menyebut nama-Mu, ya Allah, aku mati dan aku hidup.", count: 1 },
+                { arabic: "اَللّٰهُمَّ قِنِي عَذَابَكَ يَوْمَ تَبْعَثُ عِبَادَكَ", latin: "Allaahumma qinii 'adzaabaka yauma tab'atsu 'ibaadak", meaning: "Ya Allah, lindungilah aku dari azab-Mu pada hari Engkau membangkitkan hamba-hamba-Mu.", count: 3 },
+            ],
+        },
+    ];
+}
 
-function DzikrItemCard({ item, index }: { item: typeof CATEGORIES[0]["items"][0]; index: number }) {
+function DzikrItemCard({ item, index, t }: { item: ReturnType<typeof getCategories>[0]["items"][0]; index: number; t: ReturnType<typeof import("@/components/LanguageProvider").useLanguage>["t"] }) {
     const [currentCount, setCurrentCount] = useState(0);
     const completed = currentCount >= item.count;
     const { isDark, textMain, textMuted, bgCard, borderColor, subtleBg } = useThemeColors();
@@ -95,7 +97,7 @@ function DzikrItemCard({ item, index }: { item: typeof CATEGORIES[0]["items"][0]
                     }}>
                         {completed ? '✓' : index + 1}
                     </div>
-                    <span style={{ fontSize: 11, fontWeight: 600, color: textMuted }}>Ulangi {item.count}x</span>
+                    <span style={{ fontSize: 11, fontWeight: 600, color: textMuted }}>{t.repeat} {item.count}x</span>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                     <span style={{ fontSize: 18, fontWeight: 800, color: completed ? '#008D63' : textMain }}>{currentCount}</span>
@@ -117,7 +119,7 @@ function DzikrItemCard({ item, index }: { item: typeof CATEGORIES[0]["items"][0]
             <p style={{ fontSize: 13, color: textMuted, lineHeight: 1.6 }}>{item.meaning}</p>
             {!completed && (
                 <p style={{ fontSize: 11, color: isDark ? '#6B7280' : '#9CA3AF', textAlign: 'center', marginTop: 12, fontWeight: 500 }}>
-                    👆 Tap untuk menghitung
+                    👆 {t.tapToCount2}
                 </p>
             )}
         </div>
@@ -126,10 +128,11 @@ function DzikrItemCard({ item, index }: { item: typeof CATEGORIES[0]["items"][0]
 
 export default function DzikirPage() {
     const [activeCategory, setActiveCategory] = useState<string | null>(null);
-    const selectedCategory = CATEGORIES.find(c => c.id === activeCategory);
 
     const { isDark, bgPage, bgCard, textMain, textMuted, borderColor, subtleBg } = useThemeColors();
     const { t } = useLanguage();
+    const categories = getCategories(t);
+    const selectedCategory = categories.find(c => c.id === activeCategory);
 
     return (
         <div style={{ paddingTop: 16, paddingBottom: 100, minHeight: '100vh', background: bgPage, transition: 'background 0.3s' }}>
@@ -158,16 +161,16 @@ export default function DzikirPage() {
                             أَلَا بِذِكْرِ اللّٰهِ تَطْمَئِنُّ الْقُلُوبُ
                         </p>
                         <p style={{ fontSize: 13, opacity: 0.85 }}>
-                            &ldquo;Ketahuilah, hanya dengan mengingat Allah hati menjadi tenteram.&rdquo;
+                            {t.dzikirHeroQuote}
                         </p>
-                        <p style={{ fontSize: 11, opacity: 0.6, marginTop: 4 }}>QS. Ar-Ra&apos;d: 28</p>
+                        <p style={{ fontSize: 11, opacity: 0.6, marginTop: 4 }}>{t.dzikirHeroRef}</p>
                     </div>
 
                     {/* Category Cards */}
                     <div style={{ padding: '0 20px' }}>
                         <h3 style={{ fontSize: 16, fontWeight: 700, color: textMain, marginBottom: 12 }}>{t.selectCategory}</h3>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-                            {CATEGORIES.map((cat) => (
+                            {categories.map((cat) => (
                                 <button key={cat.id} onClick={() => setActiveCategory(cat.id)} style={{
                                     display: 'flex', alignItems: 'center', gap: 16, padding: '16px 18px',
                                     borderRadius: 18, background: bgCard, border: `1px solid ${borderColor}`,
@@ -186,7 +189,7 @@ export default function DzikirPage() {
                                     </div>
                                     <div style={{ flex: 1 }}>
                                         <h4 style={{ fontSize: 16, fontWeight: 700, color: textMain, marginBottom: 2 }}>{cat.title}</h4>
-                                        <p style={{ fontSize: 12, color: textMuted }}>{cat.desc} • {cat.items.length} dzikir</p>
+                                        <p style={{ fontSize: 12, color: textMuted }}>{cat.desc} • {cat.items.length} {t.dzikirCount}</p>
                                     </div>
                                     <ChevronRight size={20} color={textMuted} />
                                 </button>
@@ -236,12 +239,12 @@ export default function DzikirPage() {
                         <span style={{ fontSize: 36 }}>{selectedCategory?.icon}</span>
                         <div>
                             <h2 style={{ fontSize: 20, fontWeight: 800, color: textMain }}>{selectedCategory?.title}</h2>
-                            <p style={{ fontSize: 12, color: textMuted }}>{selectedCategory?.desc} • {selectedCategory?.items.length} dzikir</p>
+                            <p style={{ fontSize: 12, color: textMuted }}>{selectedCategory?.desc} • {selectedCategory?.items.length} {t.dzikirCount}</p>
                         </div>
                     </div>
 
                     {selectedCategory?.items.map((item, i) => (
-                        <DzikrItemCard key={i} item={item} index={i} />
+                        <DzikrItemCard key={i} item={item} index={i} t={t} />
                     ))}
                 </div>
             )}
