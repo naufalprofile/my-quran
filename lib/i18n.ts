@@ -91,7 +91,10 @@ export interface Translations {
     nextPrayerLabel: string;
     schedule: string;
     alertOn: string;
+    alertOff: string;
     prayerNow: string;
+    playing: string;
+    nextPrayerIn: string;
     calculatingPrayer: string;
     prayerSchedule: string;
     location: string;
@@ -367,6 +370,9 @@ const translations: Record<string, Translations> = {
         dzikirHeroQuote: "\"Ketahuilah, hanya dengan mengingat Allah hati menjadi tenteram.\"",
         dzikirHeroRef: "QS. Ar-Ra'd: 28",
         dzikirCount: "dzikir",
+        alertOff: "Alert Mati",
+        playing: "Sedang Adzan",
+        nextPrayerIn: "menuju",
     },
 
     // ============================================================
@@ -505,6 +511,9 @@ const translations: Record<string, Translations> = {
         dzikirHeroQuote: "\"Verily, in the remembrance of Allah do hearts find rest.\"",
         dzikirHeroRef: "QS. Ar-Ra'd: 28",
         dzikirCount: "dhikr",
+        alertOff: "Alert Off",
+        playing: "Playing Adhan",
+        nextPrayerIn: "until",
     },
 
     // ============================================================
@@ -643,6 +652,9 @@ const translations: Record<string, Translations> = {
         dzikirHeroQuote: "\"ألا بذكر الله تطمئن القلوب\"",
         dzikirHeroRef: "سورة الرعد: 28",
         dzikirCount: "ذكر",
+        alertOff: "التنبيه معطل",
+        playing: "يُؤَذَّن",
+        nextPrayerIn: "باقي",
     },
 
     // ============================================================
@@ -781,6 +793,9 @@ const translations: Record<string, Translations> = {
         dzikirHeroQuote: "\"Ketahuilah, hanya dengan mengingati Allah hati menjadi tenteram.\"",
         dzikirHeroRef: "QS. Ar-Ra'd: 28",
         dzikirCount: "zikir",
+        alertOff: "Amaran Mati",
+        playing: "Azan Sedang Dimainkan",
+        nextPrayerIn: "menuju",
     },
 
     // ============================================================
@@ -919,6 +934,9 @@ const translations: Record<string, Translations> = {
         dzikirHeroQuote: "\"Bilin ki, kalpler ancak Allah'ı anmakla huzur bulur.\"",
         dzikirHeroRef: "Ra'd Suresi: 28",
         dzikirCount: "zikir",
+        alertOff: "Uyarı Kapalı",
+        playing: "Ezan Çalıyor",
+        nextPrayerIn: "kala",
     },
 
     // ============================================================
@@ -1057,6 +1075,9 @@ const translations: Record<string, Translations> = {
         dzikirHeroQuote: "\"C'est par le rappel d'Allah que les cœurs se tranquillisent.\"",
         dzikirHeroRef: "QS. Ar-Ra'd: 28",
         dzikirCount: "dhikr",
+        alertOff: "Alerte Désactivée",
+        playing: "Adhan en cours",
+        nextPrayerIn: "avant",
     },
 
     // ============================================================
@@ -1195,6 +1216,9 @@ const translations: Record<string, Translations> = {
         dzikirHeroQuote: "\"En el recuerdo de Allah los corazones encuentran sosiego.\"",
         dzikirHeroRef: "QS. Ar-Ra'd: 28",
         dzikirCount: "dhikr",
+        alertOff: "Alerta Desactivada",
+        playing: "Reproduciendo Adhán",
+        nextPrayerIn: "para",
     },
 };
 
